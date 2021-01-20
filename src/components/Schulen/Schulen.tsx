@@ -1,6 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
-import {List} from "../List/List";
-import withLoading from "../withLoading";
+import React, {useState} from "react";
 import {Button, Spinner, Table} from "react-bootstrap";
 import asModalForm from "../Generics/asModalForm";
 import SchulenForm from "./SchulenForm";
@@ -33,13 +31,8 @@ export const GET_SCHULEN = gql`
 
 
 export default function Schulen() {
-    const {loading, error, data} = useQuery<AlleSchulen>(GET_SCHULEN, );
+    const {loading, error, data} = useQuery<AlleSchulen>(GET_SCHULEN,);
     const SchulenFormModal = asModalForm(SchulenForm)
-    const [appState, setAppState] = useState({
-        loading: false,
-        columns: null,
-        schulen: null,
-    });
 
     const [showModal, setShow] = useState(false);
 
