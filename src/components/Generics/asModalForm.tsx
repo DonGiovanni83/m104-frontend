@@ -1,4 +1,4 @@
-import {Button, Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import React from "react";
 
 interface AsModalFormProps {
@@ -29,14 +29,6 @@ const asModalForm = <P extends object>(Component: React.ComponentType<P>) =>
                         <div>{description}</div>
                         <Component {...props as P}/>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={handleSave}>
-                            Speichern
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
             );
         }

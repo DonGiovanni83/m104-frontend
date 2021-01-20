@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Klassen from "./components/Klassen/Klassen";
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import NavBar from "./components/Layout/NavBar";
+import Schulen from "./components/Schulen/Schulen";
 
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
                     <Switch>
                         <Route path="/klassen">
                             <Klassen/>
+                        </Route>
+                        <Route path="/schulen">
+                            <Schulen/>
                         </Route>
                     </Switch>
                 </BrowserRouter>

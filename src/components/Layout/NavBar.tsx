@@ -7,6 +7,7 @@ export default function NavBar() {
                 <Navbar.Brand href="/">KM</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link href="/Klassen">Klassen</Nav.Link>
+                    <Nav.Link href="/Schulen">Schulen</Nav.Link>
                 </Nav>
                 <Form inline>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
