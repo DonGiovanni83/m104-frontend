@@ -1,12 +1,43 @@
-import {Button, Col, Form, FormControl} from "react-bootstrap";
-import React, {useState} from "react";
+import {Button, Col, Form} from "react-bootstrap";
+import React, {FormEvent, useState} from "react";
 import {InferProps} from "prop-types";
+import {gql, useMutation} from "@apollo/client";
+
+const CREATE_SCHULE = gql`
+  mutation CreateSchule(
+  $name: String,
+  $ort: String,
+  $plz: Int,
+  $adresse_1: String,
+  $adresse_2: String,
+  $tel_g: String,
+  $tel_m: String,
+  $email_1: String,
+  $email_2: String
+  ) {
+    create_schule(input_args:{
+    name:$name
+    ort:$ort,
+    plz:$plz,
+    adresse_1:$adresse_1,
+    adresse_2:$adresse_2,
+    tel_g:$tel_g,
+    tel_m:$tel_m,
+    email_1:$email_1,
+    email_2:$email_2
+  }){
+    ok
+  }
+ }
+`;
 
 interface SchulenFormProps {
     handleSave: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
 }
 
 function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
+    const [createSchule, {loading: mutationLoading, error: mutationError}] = useMutation(CREATE_SCHULE);
+
     const [formData, setFormData] = useState({
         name: '',
         ort: '',
@@ -19,11 +50,25 @@ function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
         email_2: '',
     });
 
-    const changeHandler = (e:  React.ChangeEvent<HTMLInputElement>) => {
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.id]: e.target.value})
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        createSchule({
+            variables: {
+                name: formData.name,
+                ort: formData.ort,
+                plz: formData.plz,
+                adresse_1: formData.adresse_1,
+                adresse_2: formData.adresse_2,
+                tel_g: formData.tel_g,
+                tel_m: formData.tel_m,
+                email_1: formData.email_1,
+                email_2: formData.email_2
+            }
+        });
         console.log(formData)
     }
     return (
@@ -35,51 +80,53 @@ function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
             <Form.Row>
                 <Form.Group as={Col} controlId="ort">
                     <Form.Label>Ort</Form.Label>
-                    <Form.Control type="text" required/>
+                    <Form.Control onChange={changeHandler} type="text" required/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="plz">
                     <Form.Label>PLZ</Form.Label>
-                    <Form.Control type="number" required>
+                    <Form.Control onChange={changeHandler} required>
                     </Form.Control>
                 </Form.Group>
             </Form.Row>
             <Form.Group controlId="adresse_1">
                 <Form.Label>Adresse</Form.Label>
-                <Form.Control placeholder="1234 Main St" required/>
+                <Form.Control onChange={changeHandler} placeholder="1234 Main St" required/>
             </Form.Group>
 
             <Form.Group controlId="adresse_1">
                 <Form.Label>Adresse 2</Form.Label>
-                <Form.Control placeholder="Apartment, studio, or floor"/>
+                <Form.Control onChange={changeHandler} placeholder="Apartment, studio, or floor"/>
             </Form.Group>
 
             <Form.Row>
                 <Form.Group as={Col} controlId="tel_g">
                     <Form.Label>Telefon Geschäft</Form.Label>
-                    <Form.Control type="phone" placeholder="031 999 00 00" required/>
+                    <Form.Control onChange={changeHandler} type="phone" placeholder="031 999 00 00" required/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="tel_m">
                     <Form.Label>Telefon privat</Form.Label>
-                    <Form.Control type="phone" placeholder=""/>
+                    <Form.Control onChange={changeHandler} type="phone" placeholder=""/>
                 </Form.Group>
             </Form.Row>
             <Form.Row>
                 <Form.Group as={Col} controlId="email_1">
                     <Form.Label>Email 1</Form.Label>
-                    <Form.Control type="email" placeholder="email@message.com" required/>
+                    <Form.Control onChange={changeHandler} type="email" placeholder="email@message.com" required/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="email_1">
                     <Form.Label>Email 2</Form.Label>
-                    <Form.Control type="email" placeholder=""/>
+                    <Form.Control onChange={changeHandler} type="email" placeholder=""/>
                 </Form.Group>
             </Form.Row>
 
             <Button variant="primary" type="submit">
                 Speichern
             </Button>
+            {mutationLoading && <p>Loading...</p>}
+            {mutationError && <p>Error :( Please try again</p>}
         </Form>
     );
 }
