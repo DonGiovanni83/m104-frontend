@@ -11,22 +11,27 @@ interface AlleKlassen {
 
 
 export const GET_KLASSEN = gql`
-  query GetKlassen {
-    klassen {
+ query GetKlassen {
+  klassen {
+    id
+    name
+    schule {
       id
       name
-      adresse{
-      ort
-      plz
-      adresse_1
-      adresse_2
-      tel_g
-      tel_m
-      email_1
-      email_2
+      adresse {
+        id
+        ort
+        plz
+        adresse_1
+        adresse_2
+        tel_g
+        tel_m
+        email_1
+        email_2
       }
     }
   }
+}
 `;
 
 
@@ -50,7 +55,7 @@ export default function Klassen() {
                         Neu +
                     </Button>
                     <KlassenFormModal
-                        title={"Neue Schule erfassen"}
+                        title={"Neue Klasse erfassen"}
                         description={""}
                         showModal={showModal}
                         handleClose={handleClose}
