@@ -23,6 +23,12 @@ export interface Klasse {
     schule: Schule
 }
 
+export interface Modul {
+    id: number
+    name: string
+    schule: Schule
+}
+
 export interface Firma {
     name: string,
     adresse: Adresse

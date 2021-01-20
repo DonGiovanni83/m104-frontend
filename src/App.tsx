@@ -6,6 +6,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import NavBar from "./components/Layout/NavBar";
 import Schulen from "./components/Schulen/Schulen";
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import Module from "./components/Module/Module";
 
 const apiUrl = process.env.REACT_APP_BACKEND_API_URL!.concat(`/graphql`);
 
@@ -29,6 +30,9 @@ function App() {
                             </Route>
                             <Route path="/schulen">
                                 <Schulen/>
+                            </Route>
+                            <Route path="/module">
+                                <Module/>
                             </Route>
                         </Switch>
                     </BrowserRouter>
