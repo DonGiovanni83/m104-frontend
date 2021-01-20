@@ -1,40 +1,54 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {List} from "../List/List";
 import withLoading from "../withLoading";
-import {Button} from "react-bootstrap";
+import {Button, Spinner, Table} from "react-bootstrap";
 import asModalForm from "../Generics/asModalForm";
 import SchulenForm from "./SchulenForm";
+import {gql, useQuery} from "@apollo/client";
+import {Schule} from "../../data/api";
+
+interface AlleSchulen {
+    schulen: Schule[]
+}
+
+
+export const GET_SCHULEN = gql`
+  query GetSchulen {
+    schulen {
+      id
+      name
+      adresse{
+      ort
+      plz
+      adresse_1
+      adresse_2
+      tel_g
+      tel_m
+      email_1
+      email_2
+      }
+    }
+  }
+`;
+
 
 export default function Schulen() {
-    const LoadingComponent = withLoading(List);
+    const {loading, error, data} = useQuery<AlleSchulen>(GET_SCHULEN, );
     const SchulenFormModal = asModalForm(SchulenForm)
     const [appState, setAppState] = useState({
         loading: false,
         columns: null,
-        classes: null,
+        schulen: null,
     });
 
     const [showModal, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleSave = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        console.log(event)
+    const closeModal = () => {
         setShow(false);
     }
 
-    useEffect(() => {
-        setAppState({loading: true, columns: null, classes: null});
-        const apiUrl = process.env.REACT_APP_BACKEND_API_URL!.concat(`/schulen`);
-        console.log(apiUrl)
-        fetch(apiUrl)
-            .then((res) => res.json())
-            .then((schulen) => {
-                setAppState({loading: false, columns: schulen[0], classes: schulen.shift()});
-            });
-    }, [setAppState]);
 
     return (
         <div>
@@ -49,13 +63,43 @@ export default function Schulen() {
                         description={""}
                         showModal={showModal}
                         handleClose={handleClose}
-                        handleSave={handleSave}
+                        closeModal={closeModal}
                     />
                 </div>
 
             </div>
-            <LoadingComponent loading={appState.loading} columnNames={appState.columns}
-                              entries={appState.classes}/>
+
+            <div> {loading ?
+                (
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>)
+                : (
+                    <Table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Ort</th>
+                            <th>PLZ</th>
+                            <th>Adresse 1</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {data?.schulen?.map(schule => (
+                            <tr key={schule.id}>
+                                <td>{schule.id}</td>
+                                <td>{schule.name}</td>
+                                <td>{schule.adresse.ort}</td>
+                                <td>{schule.adresse.plz}</td>
+                                <td>{schule.adresse.adresse_1}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                )
+            }
+            </div>
         </div>
     );
 }

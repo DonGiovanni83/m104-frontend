@@ -39,9 +39,3 @@ function App() {
 }
 
 export default App;
-
-// enable cors
-var corsOptions = {
-    origin: '<insert uri of front-end domain>',
-    credentials: true // <-- REQUIRED backend setting
-};

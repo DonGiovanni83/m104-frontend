@@ -1,7 +1,8 @@
 import {Button, Col, Form} from "react-bootstrap";
 import React, {FormEvent, useState} from "react";
 import {InferProps} from "prop-types";
-import {gql, useMutation} from "@apollo/client";
+import {gql, useMutation, useQuery} from "@apollo/client";
+import {GET_SCHULEN} from "./Schulen";
 
 const CREATE_SCHULE = gql`
   mutation CreateSchule(
@@ -32,11 +33,16 @@ const CREATE_SCHULE = gql`
 `;
 
 interface SchulenFormProps {
-    handleSave: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
+    closeModal: () => void
 }
 
-function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
-    const [createSchule, {loading: mutationLoading, error: mutationError}] = useMutation(CREATE_SCHULE);
+function SchulenForm({closeModal}: InferProps<SchulenFormProps>) {
+    const [createSchule, {loading: mutationLoading, error: mutationError}] = useMutation(CREATE_SCHULE, {
+        refetchQueries: [
+            {query: GET_SCHULEN}
+        ]
+    });
+
 
     const [formData, setFormData] = useState({
         name: '',
@@ -55,6 +61,7 @@ function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        closeModal()
         e.preventDefault();
         createSchule({
             variables: {
@@ -69,7 +76,6 @@ function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
                 email_2: formData.email_2
             }
         });
-        console.log(formData)
     }
     return (
         <Form onSubmit={handleSubmit}>
@@ -122,7 +128,7 @@ function SchulenForm({handleSave}: InferProps<SchulenFormProps>) {
                 </Form.Group>
             </Form.Row>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" >
                 Speichern
             </Button>
             {mutationLoading && <p>Loading...</p>}

@@ -6,7 +6,6 @@ interface AsModalFormProps {
     description: string,
     showModal: boolean,
     handleClose: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void,
-    handleSave: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
 }
 
 const asModalForm = <P extends object>(Component: React.ComponentType<P>) =>
@@ -17,7 +16,6 @@ const asModalForm = <P extends object>(Component: React.ComponentType<P>) =>
                 description,
                 showModal,
                 handleClose,
-                handleSave,
                 ...props
             } = this.props;
             return (
