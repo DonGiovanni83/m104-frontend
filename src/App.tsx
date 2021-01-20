@@ -7,6 +7,7 @@ import NavBar from "./components/Layout/NavBar";
 import Schulen from "./components/Schulen/Schulen";
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 import Module from "./components/Module/Module";
+import Firmen from "./components/Firmen/Firmen";
 
 const apiUrl = process.env.REACT_APP_BACKEND_API_URL!.concat(`/graphql`);
 
@@ -33,6 +34,9 @@ function App() {
                             </Route>
                             <Route path="/module">
                                 <Module/>
+                            </Route>
+                            <Route path="/firmen">
+                                <Firmen/>
                             </Route>
                         </Switch>
                     </BrowserRouter>

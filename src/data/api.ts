@@ -30,6 +30,7 @@ export interface Modul {
 }
 
 export interface Firma {
+    id: number
     name: string,
     adresse: Adresse
 }

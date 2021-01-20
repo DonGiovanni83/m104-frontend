@@ -9,11 +9,8 @@ export default function NavBar() {
                     <Nav.Link href="/Module">Module</Nav.Link>
                     <Nav.Link href="/Klassen">Klassen</Nav.Link>
                     <Nav.Link href="/Schulen">Schulen</Nav.Link>
+                    <Nav.Link href="/Firmen">Firmen</Nav.Link>
                 </Nav>
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
-                    <Button variant="outline-info">Search</Button>
-                </Form>
             </Navbar>
         </div>
     );
